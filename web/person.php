@@ -113,7 +113,7 @@
 											if ($prod_id != null) {
 												$reqProdName = $bdd->query('SELECT TITLLE FROM PRODUCTION WHERE ID=\'' . $prod_id . '\'');
 												$prodName = $reqProdName->fetch();
-												echo "<h3>" . $prodName["TITLLE"] . ": </h3> <br />";
+												echo "<h3><a href=\"production.php?id=".$prod_id."\">" . $prodName["TITLLE"] . ":</a> </h3> <br />";
 											} else {
 												echo "<strong>Production named: <strong> Unknown <br />";
 											}

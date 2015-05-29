@@ -95,7 +95,7 @@
 											if ($person_id != null) {
 												$reqPersName = $bdd->query('SELECT ID, NAME FROM PERSON WHERE ID=\'' . $person_id . '\'');
 												$persName = $reqPersName->fetch();
-												echo "<h3> <a href=\"../person.php?id=" . $persName["ID"] . " \">" . $persName["NAME"] . ": </a> </h3> <br />";
+												echo "<h3> <a href=\"person.php?id=" . $persName["ID"] . " \">" . $persName["NAME"] . ": </a> </h3> <br />";
 											} 
 											
 											if ($char_id != null) {
@@ -126,7 +126,7 @@
 												$reqComp = $bdd->query('SELECT * FROM COMPANY WHERE ID=\'' . $comp_id . '\'');
 												$compData = $reqComp->fetch();
 												
-												echo "<h3><a href=\"../company.php?id= ' . $comp_id . ' \"> " . $compData["NAME"] ." </a></h3> <br /> ";
+												echo "<h3><a href=\"company.php?id=" . $comp_id . "\"> " . $compData["NAME"] ." </a></h3> <br /> ";
 												echo "Country Code : " . $compData["COUNTRY_CODE"] . " <br />";
 												echo "Affiliation : " . $kind ." <br />";
 												
