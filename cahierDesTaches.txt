@@ -41,8 +41,14 @@ Mis à jour par J-T le 29 à 9h
 	~~~~~~~~~~~
 	DATA IMPORT
 	~~~~~~~~~~~
-		* Importation de toutes les données 			[DONE] (presque quasi]
-		* Ajout des contraintes et foreign keys 		[TODO]
+		* Importation de toutes les données 			[DONE]
+		* Ajout des contraintes et foreign keys 		[TODO] (pas très important...)
+			-> ALT_NAME 								[DONE]
+			-> ALT_TITLE
+			-> PROD_CAST
+			-> prod_comp
+			-> autre?
+			
 		
 	~~~~~~~
 	QUERIES
