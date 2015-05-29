@@ -1,0 +1,83 @@
+
+CAHIER DES TÂCHES 
+------------------
+Mis à jour par J-T le 29 à 9h
+
+	~~~~~~~
+	RAPPORT
+	~~~~~~~
+		
+		Deliverable 1 :
+		-------------
+			* Corriger le ER model et le schéma 								[TODO]
+			* Vérifier que les contraintes et "design choices soient à jour		[TODO]
+			* Modifier les commandes (createTable) SQL en conséquence 			[TODO]
+			
+		Deliverable 2 :
+		-------------
+			* Intégrer des screenshots de l'interface							[TODO]
+			* Intégrer le code SQL des requêtes									[TODO]
+			* Expliquer l'implémentation de la fonction "search" dans la DB		[TODO]
+			
+			* Explanation for the design choices ??
+			
+		Deliverable 3 :
+		-------------
+			* Intégrer le code SQL des requêtes									[TODO]
+			* Choisir 3 requêtes ( "remplir R1" - "R2" - "R3" )					[TODO]
+				Explain the necessities of indexes based on the queries 
+				and the query plans that you can find from the system 
+			* Indiquer le temps d'exécution de chacune des query en ms			[TODO]
+			* Explain the distribution of the cost (based again on the plans) 	[TODO]
+				for 3 queries selected in part 2.
+			* Visualize the results of the queries (in case they are not scalar) ??? rien à mettre pour cette partie là j'imagine...
+			
+			* Add description of the queries and interfaces, 					[TODO]
+			* explanation for the design choices, 								[TODO]
+			* analysis of the chosen queries, 									[TODO]
+			
+			
+			
+	~~~~~~~~~~~
+	DATA IMPORT
+	~~~~~~~~~~~
+		* Importation de toutes les données 			[DONE] (presque quasi]
+		* Ajout des contraintes et foreign keys 		[TODO]
+		
+	~~~~~~~
+	QUERIES
+	~~~~~~~
+		Deliverable 2 :
+		-------------
+			* Faires toutes les queries 				[DONE]
+			* Vérifier tout et évent. optimiser 		[TODO]
+			
+		Deliverable 3 :
+		-------------
+			* Terminer encore les queries suivantes :
+				a [TODO]
+				c [TODO]
+				d [TODO]
+				e [TODO]
+				h  à terminer
+				i [TODO]
+				k [TODO]
+				l [TODO]
+				m [TODO]
+				n [TODO]
+					
+	~~~~~~~~~
+	INTERFACE
+	~~~~~~~~~
+		* Terminer la partie "search" (search.php) 				[TODO]
+		* Implémenter un "follow up" suite à une recherche		[TODO]
+		* Intégrer les queries du deliv 2 et leur affichage 	[TODO]
+		* Intégrer les queries du deliv 3 et leur affichage 	[TODO]
+		
+		* Build an interface to :
+			-> Run queries										[voir plus haut]
+			-> Insert data										[TODO]
+			-> Delete data 										[TODO]
+		giving as parameters the details of the queries.
+
+	
