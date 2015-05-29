@@ -62,7 +62,7 @@
 										}
 										
 										while($donnees = $req->fetch()){
-											  echo "<p>" . $donnees['NAME'] . ", ";
+											  echo "<p> <a href=\"person.php/?id=". $donnees['ID'] ."\">" . $donnees['NAME'] . ", ";
 											  
 											  if ($donnees['GENDER'] != null) {
 												  
@@ -74,7 +74,7 @@
 											  if ($donnees['MINI_BIOGRAPHY'] != null) {
 												  echo  "<strong> Bio :</strong> <em> " . mb_substr($donnees['MINI_BIOGRAPHY'], 0, 50) . "... "; 
 											  }
-											  echo " </em> <a href=\"person.php/?id=". $donnees['ID'] ."\"> More </a><br /> ";
+											  echo " </em> </a><br /> ";
 										}
 										$req->closeCursor();
 										echo "<hr>";
