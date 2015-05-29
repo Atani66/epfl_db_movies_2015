@@ -54,9 +54,9 @@
 										echo "<em><h2> " . $data['NAME'] . " : </h2></em></p> <br /> <br />";
 										
 										if ($data['GENDER'] != null) {
-											echo "Gender: [" . $data['GENDER'] . "] <br />";
+											echo "<strong>Gender:</strong> [" . $data['GENDER'] . "] <br />";
 										} else {
-											echo "Gender: [?] <br />";
+											echo "<strong>Gender:</strong> [?] <br />";
 										}
 
 										if ($data['TRIVIA'] != null) {

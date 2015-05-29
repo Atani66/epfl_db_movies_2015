@@ -89,7 +89,7 @@
 										//$req = $dbb->query("SELECT COUNT(*) FROM Person");
 
 										while($donnees = $req->fetch()){ 
-												echo "<p>" . $donnees['TITLLE'] . ", ";
+												echo "<p>  <a href=\"production.php/?id=". $donnees['ID'] ."\"> " . $donnees['TITLLE'] . ", ";
 												if ($donnees['KIND'] != null) {
 												  echo " <strong>Kind</strong>: [" . $donnees['KIND'] . "]";
 												} 
@@ -98,7 +98,7 @@
 												} 
 										}
 										$req->closeCursor();
-										echo "<hr>";
+										echo "</a><hr>";
 									}
 									
 									function searchCompany($bdd, $textQuery) {
