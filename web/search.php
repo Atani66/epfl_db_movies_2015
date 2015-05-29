@@ -44,8 +44,7 @@
 								
 									function searchPerson($bdd, $textQuery) {
 										echo "<h2>In Persons: </h2> <br />";
-										
-										
+
 										$cleanedQuery = preg_replace('/\s+/', ', ', trim($textQuery) );
 										$reversedQuery = null;
 										
@@ -57,9 +56,9 @@
 
 										$reversedQuery = preg_replace('/\s+/', ', ', $reversedQuery);
 										if ($reversedQuery != null) {
-											$req = $bdd->query('SELECT * FROM PERSON WHERE REGEXP_LIKE(NAME,  \'^' . $cleanedQuery . '\') OR REGEXP_LIKE(NAME,  \'^' . $reversedQuery . '\')');
+											$req = $bdd->query('SELECT * FROM PERSON WHERE REGEXP_LIKE(NAME,  \'^' . $cleanedQuery . '\') OR REGEXP_LIKE(NAME,  \'^' . $reversedQuery . '\') OR REGEXP_LIKE(NAME,  \'^' . $textQuery . '\') ');
 										} else {
-											$req = $bdd->query('SELECT * FROM PERSON WHERE REGEXP_LIKE(NAME,  \'^' . $cleanedQuery . '\') ');
+											$req = $bdd->query('SELECT * FROM PERSON WHERE REGEXP_LIKE(NAME,  \'^' . $cleanedQuery . '\') OR REGEXP_LIKE(NAME,  \'^' . $textQuery . '\') ');
 										}
 										
 										while($donnees = $req->fetch()){
@@ -73,8 +72,9 @@
 											  }
 											  
 											  if ($donnees['MINI_BIOGRAPHY'] != null) {
-												  echo  "<strong> Bio :</strong> <em> " . mb_substr($donnees['MINI_BIOGRAPHY'], 0, 50) . "... </em> <br /> "; 
+												  echo  "<strong> Bio :</strong> <em> " . mb_substr($donnees['MINI_BIOGRAPHY'], 0, 50) . "... "; 
 											  }
+											  echo " </em> <a href=\"person.php/?id=". $donnees['ID'] ."\"> More </a><br /> ";
 										}
 										$req->closeCursor();
 										echo "<hr>";
