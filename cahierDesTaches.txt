@@ -1,7 +1,7 @@
 
 CAHIER DES TÂCHES 
 ------------------
-Mis à jour par J-T le 29 à 9h
+Mis à jour par J-T le 29 à 17h45
 
 	~~~~~~~
 	RAPPORT
@@ -41,9 +41,9 @@ Mis à jour par J-T le 29 à 9h
 	~~~~~~~~~~~
 	DATA IMPORT
 	~~~~~~~~~~~
-		* Importation de toutes les données 			[DONE]
+		* Importation de toutes les données 			[OK]
 		* Ajout des contraintes et foreign keys 		[TODO] (pas très important...)
-			-> ALT_NAME 								[DONE]
+			-> ALT_NAME 								[OK]
 			-> ALT_TITLE
 			-> PROD_CAST
 			-> prod_comp
@@ -55,19 +55,23 @@ Mis à jour par J-T le 29 à 9h
 	~~~~~~~
 		Deliverable 2 :
 		--------------
-			* Faires toutes les queries 				[DONE]
+			* Faires toutes les queries 				[OK]
 			* Vérifier tout et évent. optimiser 		[TODO]
 			
 		Deliverable 3 :
 		--------------
 			* Terminer encore les queries suivantes :
 				a [TODO]
+				b [OK]
 				c [TODO]
 				d [TODO]
 				e [TODO]
+				f [OK]
+				g [OK]
 				h  à terminer
 				i [TODO]
-				k [TODO]
+				j [OK]
+				k [OK]
 				l [TODO]
 				m [TODO]
 				n [TODO]
