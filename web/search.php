@@ -43,7 +43,7 @@
 								<?php
 								
 									function searchPerson($bdd, $textQuery) {
-										echo "<h2>In Persons: </h2> <br />";
+										echo "<h2>People: </h2> <br />";
 
 										$cleanedQuery = preg_replace('/\s+/', ', ', trim($textQuery) );
 										$reversedQuery = null;
@@ -62,7 +62,7 @@
 										}
 										
 										while($donnees = $req->fetch()){
-											  echo "<p> <a href=\"person.php/?id=". $donnees['ID'] ."\">" . $donnees['NAME'] . ", ";
+											  echo "<p> <a href=\"person.php?id=". $donnees['ID'] ."\">" . $donnees['NAME'] . ", ";
 											  
 											  if ($donnees['GENDER'] != null) {
 												  
@@ -81,7 +81,7 @@
 									}
 
 									function searchProduction($bdd, $textQuery) {
-										echo "<h2>In Production: </h2> <br />";
+										echo "<h2>Production: </h2> <br />";
 										
 										$cleanedQuery = trim($textQuery);
 										$req = $bdd->query('SELECT * FROM PRODUCTION WHERE REGEXP_LIKE(TITLLE, \'' . $cleanedQuery . '\')  ');
@@ -89,7 +89,7 @@
 										//$req = $dbb->query("SELECT COUNT(*) FROM Person");
 
 										while($donnees = $req->fetch()){ 
-												echo "<p>  <a href=\"production.php/?id=". $donnees['ID'] ."\"> " . $donnees['TITLLE'] . ", ";
+												echo "<p>  <a href=\"production.php?id=". $donnees['ID'] ."\"> " . $donnees['TITLLE'] . ", ";
 												if ($donnees['KIND'] != null) {
 												  echo " <strong>Kind</strong>: [" . $donnees['KIND'] . "]";
 												} 
@@ -102,30 +102,27 @@
 									}
 									
 									function searchCompany($bdd, $textQuery) {
-										echo "<h2>In Comapnies: </h2> <br />";
+										echo "<h2>Comapnies: </h2> <br />";
 										
-										$req = $bdd->query('SELECT * FROM COMPANY WHERE NAME=\'' . $textQuery . '\'');
+										$reqComp = $bdd->query('SELECT * FROM COMPANY WHERE NAME=\'' . $textQuery . '\'');
 
-										//$req = $dbb->query("SELECT COUNT(*) FROM Person");
-
-										while($donnees = $req->fetch()){ 
-												echo "<p>" . $donnees['NAME'] . "  " . $donnees['COUNTRY_CODE'] . " <br /> ";
+										while($donnees = $reqComp->fetch()){ 
+												echo "<p> <a href=\"company.php?id=".$donnees['ID']."\"> " . $donnees['NAME'] . "  " . $donnees['COUNTRY_CODE'] . "</a> <br /> ";
 										}
-										$req->closeCursor();
+										$reqComp->closeCursor();
 										echo "<hr>";
 
 									}
 									function searchCaracter($bdd, $textQuery) {
-										echo "<h2>In Characters: </h2> <br />";
+										echo "<h2>Characters: </h2> <br />";
 										
-										$req = $bdd->query('SELECT * FROM CHARACTERS WHERE NAME=\'' . $textQuery . '\'');
-
-										//$req = $dbb->query("SELECT COUNT(*) FROM Person");
-
-										while($donnees = $req->fetch()){ 
-												echo "<p>" . $donnees['NAME'] . " <br /> ";
+										
+										$reqChar = $bdd->query('SELECT * FROM CHARACTERS WHERE NAME=\'' . $textQuery . '\'');
+										
+										while($donnees = $reqChar->fetch()){ 
+												echo "<p> <a href=\"characters.php?id=".$donnees['ID']."\">" . $donnees['NAME'] . " </a><br /> ";
 										}
-										$req->closeCursor();
+										$reqChar->closeCursor();
 										echo "<hr>";
 
 									}
@@ -146,11 +143,6 @@
 										searchCompany($bdd, $textQuery);
 										searchCaracter($bdd, $textQuery);
 
-										
-										/*searchPerson($_POST['search']);
-										searchProduction($_POST['search']);
-										searchCompany($_POST['search']);
-										searchCaracter($_POST['search']);*/
 									}
 
 								?>

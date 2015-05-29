@@ -95,11 +95,13 @@
 										/* RELATION BLOCK */
 										//ALT NAME
 										$reqAltName = $bdd->query('SELECT * FROM ALTERNATIVE_NAME WHERE PERSON_ID=\'' . $personId . '\'');
-										echo "<br /> <p> Alternative Names: <ul> ";
-										while($dataAltName = $reqAltName->fetch()){
-											echo "<li> " . $dataAltName['NAME'] . " </li> <br />";
+										if ($reqAltName->rowCount() > 0) {
+											echo "<br /> <p> Alternative Names: <ul> ";
+											while($dataAltName = $reqAltName->fetch()){
+												echo "<li> " . $dataAltName['NAME'] . " </li> <br />";
+											}
+											echo "</ul>";
 										}
-										echo "</ul>";
 										
 										//PRODUCTON CAST MEMBERSHIP 
 										$reqProdCast = $bdd->query('SELECT * FROM PROD_CAST WHERE PERSON_ID=\'' . $personId . '\'');
@@ -113,7 +115,7 @@
 											if ($prod_id != null) {
 												$reqProdName = $bdd->query('SELECT TITLLE FROM PRODUCTION WHERE ID=\'' . $prod_id . '\'');
 												$prodName = $reqProdName->fetch();
-												echo "<h3><a href=\"production.php?id=".$prod_id."\">" . $prodName["TITLLE"] . ":</a> </h3> <br />";
+												echo "<h3><a href=\"production.php?id=" . $prod_id . "\"> " . $prodName["TITLLE"] . ": </a> </h3> <br />";
 											} else {
 												echo "<strong>Production named: <strong> Unknown <br />";
 											}
