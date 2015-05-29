@@ -62,11 +62,15 @@ Mis à jour par J-T le 29 à 17h45
 		--------------
 			* Terminer encore les queries suivantes :
 				a [TODO]
+				b [OK]
 				c [TODO]
 				d [TODO]
 				e [TODO]
+				f [OK]
+				g [OK]
 				h  à terminer
 				i [TODO]
+				j [OK]
 				k [OK]
 				l [TODO]
 				m [TODO]
