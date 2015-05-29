@@ -41,6 +41,96 @@
 						
 							<div style="padding-top: 50px;">
 								<?php
+								
+									function searchPerson($bdd, $textQuery) {
+										echo "<h2>In Persons: </h2> <br />";
+										
+										
+										$cleanedQuery = preg_replace('/\s+/', ', ', trim($textQuery) );
+										$reversedQuery = null;
+										
+										$teststr = explode(" ", trim($textQuery));
+										
+										if (count($teststr) > 1) {
+											$reversedQuery = "" . $teststr[1] . " " . $teststr[0] . "";
+										}
+
+										$reversedQuery = preg_replace('/\s+/', ', ', $reversedQuery);
+										if ($reversedQuery != null) {
+											$req = $bdd->query('SELECT * FROM PERSON WHERE REGEXP_LIKE(NAME,  \'^' . $cleanedQuery . '\') OR REGEXP_LIKE(NAME,  \'^' . $reversedQuery . '\')');
+										} else {
+											$req = $bdd->query('SELECT * FROM PERSON WHERE REGEXP_LIKE(NAME,  \'^' . $cleanedQuery . '\') ');
+										}
+										
+										while($donnees = $req->fetch()){
+											  echo "<p>" . $donnees['NAME'] . ", ";
+											  
+											  if ($donnees['GENDER'] != null) {
+												  
+												  echo "[" . $donnees['GENDER'] . "]";
+											  } else {
+												  echo "[?]";
+											  }
+											  
+											  if ($donnees['MINI_BIOGRAPHY'] != null) {
+												  echo  "<strong> Bio :</strong> <em> " . mb_substr($donnees['MINI_BIOGRAPHY'], 0, 50) . "... </em> <br /> "; 
+											  }
+										}
+										$req->closeCursor();
+										echo "<hr>";
+									}
+
+									function searchProduction($bdd, $textQuery) {
+										echo "<h2>In Production: </h2> <br />";
+										
+										$cleanedQuery = trim($textQuery);
+										$req = $bdd->query('SELECT * FROM PRODUCTION WHERE REGEXP_LIKE(TITLLE, \'' . $cleanedQuery . '\')  ');
+
+										//$req = $dbb->query("SELECT COUNT(*) FROM Person");
+
+										while($donnees = $req->fetch()){ 
+												echo "<p>" . $donnees['TITLLE'] . ", ";
+												if ($donnees['KIND'] != null) {
+												  echo " <strong>Kind</strong>: [" . $donnees['KIND'] . "]";
+												} 
+												if ($donnees['GENRE'] != null) {
+												  echo " <strong>Genre</strong>: [" . $donnees['GENRE'] . "]";
+												} 
+										}
+										$req->closeCursor();
+										echo "<hr>";
+									}
+									
+									function searchCompany($bdd, $textQuery) {
+										echo "<h2>In Comapnies: </h2> <br />";
+										
+										$req = $bdd->query('SELECT * FROM COMPANY WHERE NAME=\'' . $textQuery . '\'');
+
+										//$req = $dbb->query("SELECT COUNT(*) FROM Person");
+
+										while($donnees = $req->fetch()){ 
+												echo "<p>" . $donnees['NAME'] . "  " . $donnees['COUNTRY_CODE'] . " <br /> ";
+										}
+										$req->closeCursor();
+										echo "<hr>";
+
+									}
+									function searchCaracter($bdd, $textQuery) {
+										echo "<h2>In Characters: </h2> <br />";
+										
+										$req = $bdd->query('SELECT * FROM CHARACTERS WHERE NAME=\'' . $textQuery . '\'');
+
+										//$req = $dbb->query("SELECT COUNT(*) FROM Person");
+
+										while($donnees = $req->fetch()){ 
+												echo "<p>" . $donnees['NAME'] . " <br /> ";
+										}
+										$req->closeCursor();
+										echo "<hr>";
+
+									}
+
+								
 									if (!isset($_POST['search']) || empty($_POST['search'])) {
 										echo "<h4>Please enter something valid !</h4>\n";
 									} else {
@@ -48,39 +138,21 @@
 										$bdd = new PDO('oci:dbname=diassrv2.epfl.ch:1521/orcldias.epfl.ch;charset=CL8MSWIN1251', 'db2015_g18', '18db2015');} 
 										catch (Exception $e){ die('Erreur : ' . $e->getMessage());}
 										
-										$_POST['search'] = htmlspecialchars($_POST['search']);
-										echo "<p>Content of the search : \"" . $_POST['search'] . "\"</p>";
+										$textQuery = htmlspecialchars($_POST['search']);
+										echo "<p>Content of the search : \"" . $textQuery . "\"</p>";
 										
-										$req = $bdd->query('SELECT * FROM TESTASD');
-										
-										while($donnees = $req->fetch()){
-										?>
-											<p> <?php echo $donnees['ID'] . " " . $donnees['TITLLE']; ?> <br />
-											<?php
-											}
-											$req->closeCursor();
+										searchPerson($bdd, $textQuery);
+										searchProduction($bdd, $textQuery);
+										searchCompany($bdd, $textQuery);
+										searchCaracter($bdd, $textQuery);
+
 										
 										/*searchPerson($_POST['search']);
 										searchProduction($_POST['search']);
 										searchCompany($_POST['search']);
 										searchCaracter($_POST['search']);*/
 									}
-									
-									function searchPerson() {
-										echo "hey";
-										$req = $dbb->query("SELECT COUNT(*) FROM Person");
-										
-									}
 
-									function searchProduction() {
-
-									}
-									function searchCompany() {
-
-									}
-									function searchCaracter() {
-
-									}
 								?>
 							</div>
 						</div>
