@@ -1,0 +1,280 @@
+\documentclass{article}
+
+%\usepackage[utf8]{inputenc}
+%\usepackage[T1]{fontenc}
+\usepackage[a4paper, total={6in, 8in}]{geometry}
+%\usepackage{amsthm}
+%\usepackage{amsmath}
+%\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{graphicx}
+\graphicspath{ {images/} }
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\renewcommand\headrulewidth{0.5pt}
+\fancyhead[L]{\bf Database}
+\fancyhead[R]{Loic Yann Gargasson - Adan Häfliger - Jean-Thomas Furrer}
+
+
+
+\begin{document}
+
+\begin{center}
+    \huge \bfseries Database Project \\[0.5cm]
+    \textsc{\LARGE First Deliverable}\\[1.5cm]
+\end{center}
+
+\section{Design Choices}
+
+\par The overall design choice we made was to stick as close as possible to the given data while keeping useful information and reducing redundancy.
+\vspace{3mm}
+
+\par Let's start with real person in the universe, we obviously described them as an entity called Person. This entity is in a week entity relationship with the Alternative\_name entity as it makes no sense to have an alternative name that is not linked to a person. We implemented the weak entity with "ON DELETE CASCADE" such that we never have existing alternative name linked to deleted Person in the database.
+\vspace{3mm}
+
+\par We decided to have a 3 way relationship with the Person, Character and Production entities as we felt that linking these entities in a relationship was the best way to form tuples that represent something that produces movies. If a person produces a movies but isn't a character then the character\_id field is set to null, this way let's us link directly person to character in the same table. We also link Person and Character to Production\_cast with many to many relationship because a person can produce several movies in different production and play many different character also since a character could be played by no real person (in computer generated movies for example) the arrow between Character and Production\_cast doesn't need any constraint, Finally anyone in the production cast needs at least one production therefore we connected the relationship with a bold line between Production and Production\_Cast. The rest is self explanatory.
+\vspace{3mm}
+
+\par The production entity also posses a weak entity relationship with an alternative title the exact same way as Person does with Alternative\_name.
+\vspace{3mm}
+
+\par And finally we have that the Company entity produces Production. This is seen as a many to many relationship with attributes because a Company can produces several production, but a production can have zero (or many) company that produces it (indie movie or collaborative movies).
+
+\vspace{3mm}
+
+\section{ER Model}
+
+\includegraphics[scale=0.5, angle=-90]{dbERModel_v2.png}
+
+\section{QL DDL code for table creation}
+\begin{lstlisting}
+CREATE TABLE Person
+(	
+	id VARCHAR(20) NOT NULL,
+	Name VARCHAR(100),
+	Gender VARCHAR(5),
+	Trivia VARCHAR(255),
+	Quotes VARCHAR(255),
+	Birth_date DATE,
+	Death_date DATE,
+	Birth name VARCHAR(255),
+	Mini biography TEXT, -- Using MySQL or PostgreSQL, 
+                         -- this will allow to
+                         -- have more than 4000 characters.
+	Spouse VARCHAR(100),
+	Height VARCHAR(5),
+
+	PRIMARY KEY(id)
+)
+
+CREATE TABLE Characters
+(
+	id VARCHAR(20) NOT NULL,
+	name VARCHAR(100),
+
+	PRIMARY KEY(id)
+)
+
+CREATE TABLE Company
+(
+	id VARCHAR(20) NOT NULL,
+	country_code VARCHAR(10),
+	name VARCHAR(50),
+
+	PRIMARY KEY(id)
+)
+
+CREATE TABLE Production
+(
+	id VARCHAR(20) NOT NULL,
+	title VARCHAR(100),
+	production_year CHAR(4),
+	series_id CHAR(9), -- Here we fix the length to 9.
+    -- No id will be > than 999 999 999. And it's faster than VARCHAR
+	season_number CHAR(2),
+	episode_number CHAR(4),
+	series_years VARCHAR(10),
+	kind CHAR(10),
+	genre VARCHAR(20),
+
+	PRIMARY KEY(id)
+)
+
+
+CREATE TABLE Alternative_title
+(
+	id VARCHAR(20) NOT NULL,
+	title VARCHAR(50),
+	prod_id VARCHAR(20) NOT NULL,
+
+	PRIMARY KEY (id, prod_id),
+	FOREIGN KEY (prod_id) REFERENCES Production(id),
+		ON DELETE CASCADE
+)
+
+CREATE TABLE Alternative_name
+(
+	id VARCHAR(20) NOT NULL,
+	Name VARCHAR(50),
+	person_id VARCHAR(20) NOT NULL,
+
+	PRIMARY KEY (id, person_id),
+	FOREIGN KEY (person_id) REFERENCES Person(id),
+		ON DELETE CASCADE
+)
+
+CREATE TABLE Production_cast
+(
+	production_id VARCHAR(20) NOT NULL,
+	person_id VARCHAR(20),
+	character_id VARCHAR(20),
+	role VARCHAR(20),
+
+	PRIMARY KEY (production_id, person_id, character_id),
+	FOREIGN KEY (production_id) REFERENCES Production,
+	FOREIGN KEY (person_id) REFERENCES Person,
+	FOREIGN KEY (character_id) REFERENCES Characters
+)
+
+CREATE TABLE Production_company
+(
+	production_id VARCHAR(20),
+	company_id VARCHAR(20),
+	kind VARCHAR(50),
+
+	PRIMARY KEY (production_id, company_id),
+	FOREIGN KEY (production_id) REFERENCES Production,
+	FOREIGN KEY (company_id) REFERENCES Company
+)
+\end{lstlisting}
+
+\newpage
+\begin{center}
+    \textsc{\LARGE Second Deliverable}\\[1.5cm]
+\end{center}
+
+\section{Having trouble}
+
+\begin{flushright}
+26. April 2015
+\end{flushright}
+
+\par We had a lot of trouble parsing and cleaning the data and it took us way more time than expected so we were not able to finish all the steps for Deliverable 2.
+\vspace{3mm}
+\par We had to change our table design since we didn't take into account the fact that there were dates in the data so we added DATE fields in the SQL tables. We decided to use
+two date field for the date range in PRODUCTION. We also had to parse the height of person in the PERSON table.
+\vspace{3mm}
+\par Most of the data is imported into the given oracle DB right now (only PRODUCTION\_CAST isn't) and we could establish a connection through php to the database so we are on
+good shape to catch up and build an interface.
+\vspace{8mm}
+
+\section{Modifications due to feedback 1}
+
+\begin{flushright}
+21. May 2015
+\end{flushright}
+
+\par As said in the first feedback ; \textit{ a Person may not play a Character in a Production (example: she is a writer, not an actor).}
+Hence, we change the Primary key of the Production\_cast relation to be a combination of the attribute role and the primary keys of Person and Production (i.e. : person\_id, production\_id and role).
+
+\vspace{5mm}
+\section{Queries 1}
+
+\par Here is the first set of queries that a user can run in the interface :
+\begin{lstlisting}
+/*a) Compute the number of movies per year. 
+Make sure to include tv and video movies.*/
+
+SELECT COUNT(*) 
+FROM Production 
+WHERE production_year = TO_DATE(.$i.'/04/01','yy/mm/dd');
+--à intégrer dans une boucle for qui gere $i comme désiré...
+
+--autre solution :
+SELECT EXTRACT (YEAR from production_year) as yearOfProd, COUNT(*)
+FROM Production
+GROUP BY yearOfProd
+ORDER BY yearOfProd
+
+--version finale :
+SELECT production_year as yearOfProd, COUNT(*)
+FROM Production
+WHERE production_year IS NOT NULL AND production_year != 0
+GROUP BY yearOfProd
+ORDER BY yearOfProd
+
+
+/*b) Compute the ten countries with most production companies.*/
+SELECT country_code, COUNT(*) as nombreProd
+FROM Production_company AS pc, Company AS c
+WHERE pc.company_id = c.id AND country_code is not null
+GROUP BY country_code
+ORDER BY nombreProd DESC
+LIMIT 0,10
+
+
+--c) Compute the min, max and average career duration. (A career length 
+--is implied by the first and last production of a person)
+SELECT MIN(duree) as mini, MAX(duree) as maxi,
+ROUND(AVG(duree)) as moyenne
+FROM (SELECT MAX(production_year)-MIN(production_year) as duree
+		FROM person, production_cast, production
+		WHERE production_year != 0
+        AND person.id=production_cast.person_id
+        AND production.id=production_cast.production_id
+		GROUP BY person.id ) as tableDuree
+
+--d) Compute the min, max and average number of actors in a production.
+SELECT MIN(people) as mini, MAX(people) as maxi,
+        ROUND(AVG(people)) as moyenne
+
+FROM (SELECT COUNT(*) as people
+        FROM person, production_cast, production
+        WHERE person.id=production_cast.person_id
+        AND production.id=production_cast.production_id
+        GROUP BY production.id ) as peopleInProd
+
+--e) Compute the min, max and average height of female persons.
+SELECT MIN(height), MAX(height), AVG(height)
+from person
+WHERE gender LIKE 'f'
+
+
+
+--f) List all pairs of persons and movies where the person
+--has both directed the movie and acted in the movie.
+--Do not include tv and video movies.
+Select name,title
+FROM production, person,
+	(SELECT pc1.production_id, pc1.person_id
+		FROM production_cast as pc1, production_cast as pc2
+		WHERE pc1.production_id=pc2.production_id
+		AND pc1.role LIKE 'actor'
+		AND pc2.role LIKE 'director'
+	) as dbles
+WHERE production.id = dbles.production_id
+AND person.id = dbles.person_id
+
+
+--autre début de solution:
+Select title
+FROM production, production_cast as pc,
+	(SELECT production_id, role
+     FROM production_cast
+    GROUP BY production_id, person_id
+    Having count(*) >= 2) as dbles
+WHERE pc.production_id = dbles.production_id AND
+
+/*g) List the three most popular character names.*/
+SELECT COUNT(*) as appearances, pc.character_id, c.name
+FROM production_cast as pc
+INNER JOIN characters as c
+ON pc.character_id=c.id
+GROUP BY character_id
+ORDER BY appearances DESC
+LIMIT 3
+\end{lstlisting}
+
+\vspace{3mm}
+\end{document}

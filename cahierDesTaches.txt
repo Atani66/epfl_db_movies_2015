@@ -48,12 +48,12 @@ Mis à jour par J-T le 29 à 9h
 	QUERIES
 	~~~~~~~
 		Deliverable 2 :
-		-------------
+		--------------
 			* Faires toutes les queries 				[DONE]
 			* Vérifier tout et évent. optimiser 		[TODO]
 			
 		Deliverable 3 :
-		-------------
+		--------------
 			* Terminer encore les queries suivantes :
 				a [TODO]
 				c [TODO]
