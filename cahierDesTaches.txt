@@ -63,7 +63,7 @@ Mis à jour par J-T le 29 à 17h45
 			* Terminer encore les queries suivantes :
 				a [TODO]
 				b [OK]
-				c [TODO]
+				c [OK]
 				d [TODO]
 				e [TODO]
 				f [OK]

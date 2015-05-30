@@ -3,12 +3,24 @@
 
 
 --b)(OK) Given an actor, compute his most productive year.
+SELECT *
+FROM
+  (
+  SELECT prod_year, count(*) as productivity
+  FROM production prod, prod_cast pc, person p
+  WHERE  prod.id=pc.production_id AND pc.person_id=p.id AND p.id = 3429434 -- id of person is given in request
+  AND prod_year <> 0
+  GROUP BY prod_year
+  ORDER BY productivity DESC
+  ) tmp
+WHERE ROWNUM = 1
+
 SELECT production_year, count(*) as productivity
-FROM production p, production_cast pc, person
+FROM production p, prod_cast pc, person
 WHERE  p.id=pc.production_id AND pc.person_id=person.id AND person.name LIKE '%Bruce Willis%' -- name given...
+AND rownum = 1
 GROUP BY production_year
 ORDER BY productivity DESC
-LIMIT 1
 
 --autre essai :
 SELECT name, production_year y
@@ -28,7 +40,7 @@ GROUP BY name, y
 ORDER BY name, c DESC
 
 
---c)(PAS OK) Given a year, list the company with the highest number of productions in each genre.
+--c)(OK) Given a year, list the company with the highest number of productions in each genre.
 SELECT COUNT(*) as nbreProd, c.name, p.genre
     FROM production p, production_company pComp, company c
     WHERE p.id = pComp.production_id 
@@ -37,20 +49,22 @@ SELECT COUNT(*) as nbreProd, c.name, p.genre
     GROUP BY c.name, p.genre
     ORDER BY p.genre, nbreProd DESC
 	
---> avec le rank over : (compile pas...
-SELECT COUNT(*) as nbreProd, c.name, p.genre, 
-RANK() OVER (PARTITION BY genre
-            ORDER BY nbreProd DESC) as rank
-
+--> CORRECT MAIS MOCHE
+SELECT *
 FROM
-  (SELECT COUNT(*) as nbreProd, c.name, p.genre
-    FROM production p, production_company pComp, company c
-    WHERE p.id = pComp.production_id 
-     AND p.prod_year = 2015 
-    AND pComp.company_id = c.id
-    GROUP BY c.name, p.genre
-    ORDER BY p.genre, nbreProd DESC) as tmp
-    
+    (
+    SELECT nbreProd, id, genre, Row_number() over (partition by genre order by genre, nbreProd DESC) as rownb
+    FROM
+        (
+        SELECT COUNT(*) as nbreProd, c.id, p.genre
+        FROM test_production p, test_production_company pComp, test_company c
+        WHERE p.id = pComp.production_id 
+         AND p.prod_year = 2015 
+        AND pComp.company_id = c.id
+        GROUP BY c.id, p.genre
+        ) tmp
+    ) tmp2
+WHERE rownb = 1
 
 --autre solution qui devrait marcher mais pas vraiment juste... :
 SELECT nbreProd, name, genre
@@ -65,11 +79,6 @@ FROM
      GROUP BY c.id
     ORDER BY genre, nbreProd DESC ) as tmp
 GROUP BY genre
-
-
-
-
-
 
 
 --d) Compute who worked with spouses/children/potential relatives on the same production. 
@@ -131,15 +140,30 @@ AND (prodCast.role LIKE 'actor' or prodCast.role LIKE 'actress' or prodCast.role
 AND EXTRACT(YEAR from death_date) < prod_year
 GROUP BY name
 
---k) For each year, show three companies that released the most movies.
-SELECT *, rank over (order by 
-FROM production, production_company
-Where production.kind LIKE 'movie'
+--k) (OK) For each year, show three companies that released the most movies.
 
-SELECT *
-FROM production_company prodComp, production
-WHERE production.id = prodComp.production_id
-GROUP BY prod_year, company_id
+--magnifique requete qui fonctionne parfaitement
+SELECT prod_year, rownb as ranking, name
+FROM
+    (
+    SELECT company_id, prod_year, 
+    ROW_NUMBER() over (PARTITION by prod_year order by count(*) DESC ) as rownb
+    FROM production_company prodComp, production p
+    WHERE p.id = prodComp.production_id
+    AND prod_year != 0
+    GROUP BY company_id, prod_year
+    ) tmp, company
+where rownb <= 3
+AND company.id = company_id
+
+-- this one gives the total result. We should then keep only the 3 most productive for each year
+SELECT COUNT(*) as nbreProd, company_id, prod_year
+    FROM production_company prodComp, production
+    WHERE production.id = prodComp.production_id
+    AND prod_year != 0
+    GROUP BY company_id
+    ORDER BY prod_year, nbreProd DESC
+	    
 
 --l) List all living people who are opera singers ordered from youngest to oldest.
 --m) List 10 most ambiguous credits (pairs of people and productions) ordered by the degree of ambiguity. 
