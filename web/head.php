@@ -8,7 +8,9 @@
 	<title>DB Project</title>
 
     <!-- Bootstrap -->
-	<link <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+	
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/sticky-footer-navbar.css"></link>
 
 	<!-- Custom styles for this template -->
     

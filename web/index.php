@@ -5,10 +5,20 @@
 	<style>
 			body {
 				padding-top: 100px;
+				margin-bottom: 60px;
 			}
 			.bodyOfPage {
 				padding: 40px 15px;
 			}
+			.footer {
+			  position: absolute;
+			  bottom: 0;
+			  width: 100%;
+			  
+			  height: 60px;
+			  background-color: #f5f5f5;
+			}
+			
 	</style>
     <?php include("menu.php"); ?>
 
@@ -35,22 +45,36 @@
 					
 
 			</div>
-
-			<?php 
-				try{
-					/*$bdd = new PDO('mysql:host=localhost;dbname=test;charset=utf8', 'root', '');*/
-					$dbc = new PDO('oci:dbname=diassrv2.epfl.ch:1521/orcldias.epfl.ch;charset=CL8MSWIN1251', 'db2015_g18', '18db2015');					
-					echo "Connected to Oracle =)";
-					
-					} 
-					/*('db2015_g18', '18db2015', "diassrv2.epfl.ch:1521/orcldias.epfl.ch" )*/
-				catch (Exception $e){
-					die('Erreur : ' . $e->getMessage());}
-			?>
-			
 		</div>
     </div>
-	<!-- /.container -->
+	
+	<!--<footer class="footer">
+		<div class="container">
+			
+			<p>
+				Example courtesy and 
+			</p>
+		</div>
+	</footer> -->
+	
+	<footer class="footer">
+		<div class="container">
+			<p>
+				<?php 
+					try{
+						/*$bdd = new PDO('mysql:host=localhost;dbname=test;charset=utf8', 'root', '');*/
+						$dbc = new PDO('oci:dbname=diassrv2.epfl.ch:1521/orcldias.epfl.ch;charset=CL8MSWIN1251', 'db2015_g18', '18db2015');					
+						echo "Connected to Oracle =)";
+						
+						} 
+						/*('db2015_g18', '18db2015', "diassrv2.epfl.ch:1521/orcldias.epfl.ch" )*/
+					catch (Exception $e){
+						die('Erreur : ' . $e->getMessage());}
+				?>
+			</p>
+		</div>
+	</footer>
+ 	<!-- /.container -->
 
 
     <!-- Bootstrap core JavaScript
