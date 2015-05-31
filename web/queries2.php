@@ -46,8 +46,38 @@
 						in the productions of a production company (not a distributor) from that country.</option>
 						<option value="9"></option>
 					</select>
+					
+					<?php
+					try{
+						$bdd = new PDO('oci:dbname=diassrv2.epfl.ch:1521/orcldias.epfl.ch;charset=CL8MSWIN1251', 'db2015_g18', '18db2015');
+								
+						if (!isset($_GET['query']) || empty($_GET['query'])) {
+							echo "<h3>Please select a query!</h>\n";
+						} else {
+						$query = $_GET['query'];
+							
+							//Query a
+							if ($query == 1) { 
+									echo "<h2> Number of movies per year </h2> <br />";
+									
+									$req = $bdd->query("SELECT prod_year as yearOfProd, COUNT(*) 
+														FROM PRODUCTION 
+														WHERE prod_year != 0 
+														GROUP BY prod_year
+														ORDER BY prod_year");
+														
+									while($data = $req->fetch()){
+										echo "<strong>".$data["YEAROFPROD"] . ": </strong> ". $data["COUNT(*)"] ."<br />" ;
+									}
+								
+							}
+							
+						}
+					} catch (Exception $e){ die('Erreur : ' . $e->getMessage());}
+					
+					?>
+					
 				</div>
-				
 			</div>
 			<div class="col-md-2">
 					<button type="submit" class="btn btn-success">Execute</button>

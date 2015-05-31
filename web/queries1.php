@@ -383,7 +383,8 @@
 													WHERE gender LIKE \'f\'');
 																												
 									while($data = $req->fetch()){
-										echo "<strong> Average height: </strong> ". $data["AVG(HEIGHT)"] ."<br />
+										$avg = number_format($data["AVG(HEIGHT)"], 2, '.', '');
+										echo "<strong> Average height: </strong> ". $avg ."<br />
 										<strong> Maximum height:</strong> ". $data["MAX(HEIGHT)"] ."<br />
 										<strong> Minimum height:</strong> ". $data["MIN(HEIGHT)"] ."<br /> " ;
 									}
