@@ -183,19 +183,19 @@ ORDER BY episodesPerSeason DESC
 
 
 --j) (OK) Find actors, actresses and directors who have movies (including tv movies and video movies) released after their death.
-SELECT Name, prod_year as ProductionYear, EXTRACT(YEAR from death_date) as deathYear
-FROM person p, production_cast prodCast, production prod
+SELECT p.name, prod.titlle, prod_year as ProductionYear, EXTRACT(YEAR from death_date) as deathYear
+FROM test_person p, test_prod_cast prodCast, test_production prod
 WHERE p.id = prodCast.person_id
 AND prodCast.production_id = prod.id
 AND (prodCast.role LIKE 'actor' or prodCast.role LIKE 'actress' or prodCast.role LIKE 'director')
 AND EXTRACT(YEAR from death_date) < prod_year
-GROUP BY name
+GROUP BY p.name, prod.titlle, prod_year, EXTRACT(YEAR from death_date)
 
 --k) (OK) For each year, show three companies that released the most movies.
 
 --magnifique requete qui fonctionne parfaitement
 SELECT prod_year, rownb as ranking, name
-FROM
+FROM company,
     (
     SELECT company_id, prod_year, 
     ROW_NUMBER() over (PARTITION by prod_year order by count(*) DESC ) as rownb
@@ -203,7 +203,7 @@ FROM
     WHERE p.id = prodComp.production_id
     AND prod_year != 0
     GROUP BY company_id, prod_year
-    ) tmp, company
+    ) tmp
 where rownb <= 3
 AND company.id = company_id
 
@@ -226,4 +226,49 @@ ORDER BY EXTRACT(YEAR from BIRTH_DATE);
 --m) List 10 most ambiguous credits (pairs of people and productions) ordered by the degree of ambiguity. 
 --A credit is ambiguous if either a person has multiple alternative names or a production has multiple alternative titles. 
 --The degree of ambiguity is a product of the number of possible names (real name + all alternatives) and the number of possible titles (real + alternatives).
+
 --n) For each country, list the most frequent character name that appears in the productions of a production company (not a distributor) from that country.
+-- first for each company, most frequent character name
+
+WITH innerQ as (
+SELECT character_id, company_id, cnt, country_code
+FROM company c, (
+    SELECT character_id, company_id, cnt, row_number() over (PARTITION BY company_id order by cnt desc) as rang
+    FROM(
+        SELECT character_id, company_id, count(*) as cnt
+        FROM (
+            SELECT DISTINCT pCast.production_id, character_id, company_id
+            FROM test_prod_cast pCast, test_production_company pComp
+            WHERE pCast.production_id = pComp.production_id AND character_id is not null
+            ORDER BY company_id, production_id
+            ) tmp
+        GROUP BY company_id, character_id
+        ORDER BY company_id, CNT DESC
+        ) tmp2
+    ) tmp3
+WHERE RANG = 1 AND c.id = company_id
+)
+SELECT character_id, company_id, country_code
+FROM (
+  SELECT character_id, company_id, country_code, cnt, row_number() over (partition by country_code order by cnt DESC) as rang
+  FROM innerQ
+  ) tmp
+WHERE rang = 1
+
+--autres essais :
+SELECT pCast.production_id, character_id, count(*) OVER (partition by pCast.production_id ORDER BY pCast.production_id) as cnt
+FROM test_prod_cast pCast, test_production_company pComp
+WHERE character_id is not null 
+  AND pCast.production_id = pComp.production_id
+  
+  
+SELECT character_id, company_id, 
+count(*) OVER (PARTITION BY company_id, character_id) as cnt
+FROM (
+    SELECT DISTINCT pCast.production_id, character_id, company_id
+    FROM test_prod_cast pCast, test_production_company pComp
+    WHERE pCast.production_id = pComp.production_id
+      AND character_id is not null
+    ORDER BY company_id, production_id
+    ) tmp
+ORDER BY cnt desc
