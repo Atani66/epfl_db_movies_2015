@@ -102,7 +102,7 @@
 									}
 									
 									function searchCompany($bdd, $textQuery) {
-										echo "<h2>Comapnies: </h2> <br />";
+										echo "<h2>Companies: </h2> <br />";
 										
 										$reqComp = $bdd->query('SELECT * FROM COMPANY WHERE NAME=\'' . $textQuery . '\'');
 

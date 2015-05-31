@@ -184,7 +184,7 @@
     if( $code == 'NR' ) $country = 'Nauru';
     if( $code == 'NP' ) $country = 'Nepal';
     if( $code == 'AN' ) $country = 'Netherlands Antilles';
-    if( $code == 'NL' ) $country = 'Netherlands the';
+    if( $code == 'NL' ) $country = 'Netherlands';
     if( $code == 'NC' ) $country = 'New Caledonia';
     if( $code == 'NZ' ) $country = 'New Zealand';
     if( $code == 'NI' ) $country = 'Nicaragua';
