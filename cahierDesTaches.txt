@@ -69,7 +69,7 @@ Mis à jour par J-T le 29 à 17h45
 				f [OK]
 				g [OK]
 				h [OK]
-				i [TODO]
+				i [OK]
 				j [OK]
 				k [OK]
 				l [OK]

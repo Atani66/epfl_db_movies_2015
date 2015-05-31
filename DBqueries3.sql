@@ -166,6 +166,20 @@ OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY
 	
 	
 --i) Compute the top ten tv-series (by number of episodes per season).
+SELECT series_id, avg(cnt) as episodesPerSeason
+FROM (
+    SELECT *
+    FROM (
+      SELECT series_id, COUNT(*) OVER (PARTITION BY series_id, season_number ORDER BY series_id) as cnt
+      FROM test_production
+      WHERE kind LIKE 'episode'
+      ) tmp
+    GROUP BY series_id, CNT
+    ORDER BY series_id
+    ) tmp2
+GROUP BY series_ID
+ORDER BY episodesPerSeason DESC
+
 
 
 --j) (OK) Find actors, actresses and directors who have movies (including tv movies and video movies) released after their death.
