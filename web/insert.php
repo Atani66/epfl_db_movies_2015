@@ -375,13 +375,73 @@
 					</div>
 					
 					
+				<h4>Add a new Cast member</h4>
+				<form action="insert-production.php" method="get" class="form-horizontal">
+					<div class="form-group">
+						<label for="title" class="col-sm-2 control-label">PersonID</label>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" id="title" name="title" placeholder="Production title">
+						</div>
+					</div>
 					
+					<div class="form-group">
+						<label for="type" class="col-sm-2 control-label">ProductionID</label>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" id="type" name="type" placeholder="ProductionID">
+						</div>
+					</div>
+						
+					<div class="form-group">
+						<label for="type" class="col-sm-2 control-label">CharacterID</label>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" id="type" name="type" placeholder="CharacterID">
+						</div>
+					</div>
+						
+					<div class="form-group">
+						<label for="type" class="col-sm-2 control-label">Role </label>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" id="type" name="type" placeholder="Role">
+						</div>
+					</div>
+
 					<div class="form-group">
 						<div class="col-sm-offset-2 col-sm-10">
 							<button type="submit" class="btn btn-default">Insert</button>
 						</div>
 					</div>
 				</form>
+				
+				<h4>Add a new Production Company affiliation</h4>
+					<form action="insert-production.php" method="get" class="form-horizontal">
+					<div class="form-group">
+						<label for="title" class="col-sm-2 control-label">CompanyID</label>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" id="title" name="title" placeholder="CompanyID">
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<label for="type" class="col-sm-2 control-label">ProductionID</label>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" id="type" name="type" placeholder="ProductionID">
+						</div>
+					</div>
+						
+					<div class="form-group">
+						<label for="type" class="col-sm-2 control-label">Affiliation</label>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" id="type" name="type" placeholder="producer">
+						</div>
+					</div>
+
+					<div class="form-group">
+						<div class="col-sm-offset-2 col-sm-10">
+							<button type="submit" class="btn btn-default">Insert</button>
+						</div>
+					</div>
+				</form>
+				
 
 				<?php
 					
