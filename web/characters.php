@@ -51,14 +51,23 @@
 										$data = $req->fetch();
 										echo "<h1>" . $data["NAME"] . " : </h1>";
 										
-										$person_id = $data["ID"];
+										$reqProdid = $bdd->query('SELECT * FROM PROD_CAST WHERE CHARACTER_ID=\'' . $charId . '\'');
+										$prodData = $reqProdid->fetch();
+										
+										$person_id = $prodData['PERSON_ID'];
 										$persReq = $bdd->query('SELECT NAME FROM PERSON WHERE id=\'' . $person_id . '\'');
 										$persData = $persReq->fetch();
 										
 										echo "<h3> <em>Interpreted by </em> <a href=\"person.php?id=".$person_id."\"> ".$persData["NAME"]." </a>";
 										
+										$prodId = $prodData['PRODUCTION_ID'];
 										
-									
+										$reqProdName = $bdd->query('SELECT ID, TITLLE FROM PRODUCTION WHERE ID=\'' . $prodId . '\'');
+										$prodDataName = $reqProdName->fetch();
+										
+										echo " in <a href=\"production.php?id=".$prodDataName['ID']."\"> ".$prodDataName['TITLLE']." </a>";
+										
+										
 									}	
 
 								?>
