@@ -61,7 +61,7 @@ Mis à jour par J-T le 29 à 17h45
 		Deliverable 3 :
 		--------------
 			* Terminer encore les queries suivantes :
-				a [TODO]
+				a [OK]
 				b [OK]
 				c [OK]
 				d [TODO]
@@ -79,7 +79,7 @@ Mis à jour par J-T le 29 à 17h45
 	~~~~~~~~~
 	INTERFACE
 	~~~~~~~~~
-		* Terminer la partie "search" (search.php) 				[TODO]
+		* Terminer la partie "search" (search.php) 				[OK]
 		* Implémenter un "follow up" suite à une recherche		[TODO]
 		* Intégrer les queries du deliv 2 et leur affichage 	[TODO]
 		* Intégrer les queries du deliv 3 et leur affichage 	[TODO]
