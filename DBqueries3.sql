@@ -166,6 +166,11 @@ SELECT COUNT(*) as nbreProd, company_id, prod_year
 	    
 
 --l) List all living people who are opera singers ordered from youngest to oldest.
+-- Maybe we should there are other fields to check with the key word "opera singer" 
+SELECT * FROM PERSON WHERE REGEXP_LIKE(TRIVIA, 'opera singer') OR
+        REGEXP_LIKE(MINI_BIOGRAPHY, 'opera singer')
+	ORDER BY EXTRACT(YEAR from BIRTH_DATE);
+	
 --m) List 10 most ambiguous credits (pairs of people and productions) ordered by the degree of ambiguity. 
 --A credit is ambiguous if either a person has multiple alternative names or a production has multiple alternative titles. 
 --The degree of ambiguity is a product of the number of possible names (real name + all alternatives) and the number of possible titles (real + alternatives).
