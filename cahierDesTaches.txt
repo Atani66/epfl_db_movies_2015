@@ -56,7 +56,7 @@ Mis à jour par J-T le 29 à 17h45
 		Deliverable 2 :
 		--------------
 			* Faires toutes les queries 				[OK]
-			* Vérifier tout et évent. optimiser 		[TODO]
+			* Vérifier tout et évent. optimiser 		[OK]
 			
 		Deliverable 3 :
 		--------------
@@ -64,15 +64,15 @@ Mis à jour par J-T le 29 à 17h45
 				a [OK]
 				b [OK]
 				c [OK]
-				d [TODO]
-				e [TODO]
+				d [OK] : faudrait ajouter une regexp pour prendre que le surname? nécessaire?
+				e [OK]
 				f [OK]
 				g [OK]
 				h  à terminer
 				i [TODO]
 				j [OK]
 				k [OK]
-				l [TODO]
+				l [OK]
 				m [TODO]
 				n [TODO]
 					

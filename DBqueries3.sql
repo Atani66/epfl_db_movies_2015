@@ -1,6 +1,28 @@
 --a) Find the actors and actresses (and report the productions) who played in a production 
 --where they were 55 or more year older than the youngest actor/actress playing.
 
+With innerQ as (
+    SELECT production_id, name, anni
+    FROM (
+		SELECT production_id, 
+			name, 
+			EXTRACT(YEAR FROM birth_date) as anni, 
+			ROW_Number() Over (PARTITION BY production_id order by birth_date) as rownb,
+			count(*) over(PARTITION BY production_id) CNT 
+		FROM test_production prod, test_prod_cast prodCast, test_person p
+		WHERE prod.id=prodCast.production_id 
+			AND p.id = prodCast.person_id
+			AND birth_date is not null
+    ) tmp
+    WHERE (ROWNB = 1 OR ROWNB = CNT))
+SELECT p.titlle, p.id, b.name as Who, b.anni, a.anni-b.anni as AgeDiff
+FROM innerQ a, innerQ b, test_production p
+WHERE a.production_id = b.production_id 
+	AND a.name != b.name 
+	AND a.anni-b.anni >= 55
+	AND a.production_id = p.id
+
+
 
 --b)(OK) Given an actor, compute his most productive year.
 SELECT *
@@ -81,18 +103,30 @@ FROM
 GROUP BY genre
 
 
---d) Compute who worked with spouses/children/potential relatives on the same production. 
+--d) (OK : manque l'ajout d'une regexp pour prendre que le surname)Compute who worked with spouses/children/potential relatives on the same production. 
 --(You can assume that the same real surname implies a relation)
 
+SELECT pid, p1.name, p1id, p2.name, p2id
+FROM test_person p1, test_person p2, (
+    SELECT pc1.production_id as pid, pc1.person_id as p1id, pc2.person_id as p2id
+    FROM test_prod_cast pc1, test_prod_cast pc2
+    WHERE pc1.person_id < pc2.person_id AND pc1.production_id = pc2.production_id
+    ) tmp
+WHERE p1id = p1.id AND p2id = p2.id AND p1.name = p2.name
 
---e) (PAS OK) Compute the average number of actors per production per year
-SELECT AVG() as MoyAct/annee,
 
-SELECT production_id, person_ID, role, production_year
-FROM production_cast pc, production
-WHERE role LIKE 'actor' 
-AND production.id = pc.production_id
-AND production_year != 0
+--e) (OK) Compute the average number of actors per production per year
+SELECT prod_year, avg(cnt)
+FROM (
+    SELECT production_id, prod_year, count(*) as cnt
+    FROM test_prod_cast prodCast, test_production prod
+    WHERE prodCast.production_id = prod.id and prod_year <> 0
+        AND (role LIKE 'actor' or role like 'actress')
+    GROUP BY prod_year, production_id
+    ORDER BY prod_year
+    ) tmp
+GROUP BY prod_year
+ORDER BY prod_year
 
 
 --f)(OK) Compute the average number of episodes per season.
@@ -166,10 +200,11 @@ SELECT COUNT(*) as nbreProd, company_id, prod_year
 	    
 
 --l) List all living people who are opera singers ordered from youngest to oldest.
--- Maybe we should there are other fields to check with the key word "opera singer" 
-SELECT * FROM PERSON WHERE REGEXP_LIKE(TRIVIA, 'opera singer') OR
+SELECT * 
+FROM PERSON 
+WHERE REGEXP_LIKE(TRIVIA, 'opera singer') OR
         REGEXP_LIKE(MINI_BIOGRAPHY, 'opera singer')
-	ORDER BY EXTRACT(YEAR from BIRTH_DATE);
+ORDER BY EXTRACT(YEAR from BIRTH_DATE);
 	
 --m) List 10 most ambiguous credits (pairs of people and productions) ordered by the degree of ambiguity. 
 --A credit is ambiguous if either a person has multiple alternative names or a production has multiple alternative titles. 
