@@ -120,7 +120,7 @@ AND (prodCast.role LIKE 'actor' or prodCast.role LIKE 'actress' or prodCast.role
 AND EXTRACT(YEAR from death_date) < prod_year
 GROUP BY p.name, prod.titlle, prod_year, EXTRACT(YEAR from death_date)
 
---k)
+--k) 8.2 secondes
 SELECT prod_year, rownb as ranking, name
 FROM company,
     (
@@ -133,5 +133,40 @@ FROM company,
     ) tmp
 where rownb <= 3
 AND company.id = company_id
+ORDER BY prod_year
 
---l)
+--l) 21.9 secondes
+SELECT * 
+FROM PERSON 
+WHERE REGEXP_LIKE(TRIVIA, 'opera singer') OR
+        REGEXP_LIKE(MINI_BIOGRAPHY, 'opera singer')
+ORDER BY EXTRACT(YEAR from BIRTH_DATE);
+
+--m) 
+???
+ 
+--n)
+WITH innerQ as (
+SELECT character_id, company_id, cnt, country_code
+FROM company c, (
+    SELECT character_id, company_id, cnt, row_number() over (PARTITION BY company_id order by cnt desc) as rang
+    FROM(
+        SELECT character_id, company_id, count(*) as cnt
+        FROM (
+            SELECT DISTINCT pCast.production_id, character_id, company_id
+            FROM prod_cast pCast, production_company pComp
+            WHERE pCast.production_id = pComp.production_id AND character_id is not null
+            ORDER BY company_id, production_id
+            ) tmp
+        GROUP BY company_id, character_id
+        ORDER BY company_id, CNT DESC
+        ) tmp2
+    ) tmp3
+WHERE RANG = 1 AND c.id = company_id
+)
+SELECT character_id, company_id, country_code
+FROM (
+  SELECT character_id, company_id, country_code, cnt, row_number() over (partition by country_code order by cnt DESC) as rang
+  FROM innerQ
+  ) tmp
+WHERE rang = 1

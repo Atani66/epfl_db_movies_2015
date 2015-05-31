@@ -11,15 +11,14 @@ Mis à jour par J-T le 29 à 17h45
 		-------------
 			* Corriger le ER model et le schéma 								[TODO]
 			* Vérifier que les contraintes et "design choices soient à jour		[TODO]
-			* Modifier les commandes (createTable) SQL en conséquence 			[TODO]
+			* Modifier les commandes (createTable) SQL en conséquence 			[OK]
 			
 		Deliverable 2 :
 		-------------
 			* Intégrer des screenshots de l'interface							[TODO]
-			* Intégrer le code SQL des requêtes									[TODO]
-			* Expliquer l'implémentation de la fonction "search" dans la DB		[TODO]
+			* Intégrer le code SQL des requêtes									[OK]
+			* Expliquer l'implémentation de la fonction "search" dans la DB		[OK]
 			
-			* Explanation for the design choices ??
 			
 		Deliverable 3 :
 		-------------

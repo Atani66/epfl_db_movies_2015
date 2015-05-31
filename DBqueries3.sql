@@ -206,6 +206,7 @@ FROM company,
     ) tmp
 where rownb <= 3
 AND company.id = company_id
+ORDER BY prod_year
 
 -- this one gives the total result. We should then keep only the 3 most productive for each year
 SELECT COUNT(*) as nbreProd, company_id, prod_year
