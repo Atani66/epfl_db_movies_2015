@@ -153,17 +153,20 @@ FROM
 
 
 
---h) (pas fini) Compute the top ten tv-series (by number of seasons).
+--h) (OK) Compute the top ten tv-series (by number of seasons).
 SELECT COUNT(*) as nbreSeason, series_id
 FROM(
-	SELECT COUNT(*), series_id, season_number
-	FROM production
+	SELECT series_id, season_number
+	FROM test_production
 	WHERE kind LIKE 'episode'
-	GROUP BY series_id, season_number ) as tmp
+	GROUP BY series_id, season_number ) tmp
 GROUP BY series_id
+ORDER BY nbreSeason DESC
+OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY
 	
 	
 --i) Compute the top ten tv-series (by number of episodes per season).
+
 
 --j) (OK) Find actors, actresses and directors who have movies (including tv movies and video movies) released after their death.
 SELECT Name, prod_year as ProductionYear, EXTRACT(YEAR from death_date) as deathYear
