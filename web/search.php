@@ -104,7 +104,7 @@
 									function searchCompany($bdd, $textQuery) {
 										echo "<h2>Companies: </h2> <br />";
 										
-										$reqComp = $bdd->query('SELECT * FROM COMPANY WHERE NAME=\'' . $textQuery . '\'');
+										$reqComp = $bdd->query('SELECT * FROM COMPANY WHERE REGEXP_LIKE(NAME, \'' . $textQuery . '\') ');
 
 										while($donnees = $reqComp->fetch()){ 
 												echo "<p> <a href=\"company.php?id=".$donnees['ID']."\"> " . $donnees['NAME'] . "  " . $donnees['COUNTRY_CODE'] . "</a> <br /> ";
